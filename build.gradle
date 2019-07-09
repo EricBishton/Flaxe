@@ -1,0 +1,28 @@
+apply plugin: 'java'
+
+version '1.0'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+sourceSets {
+    main {
+        java  {
+            srcDir 'src'
+        }
+    }
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'com.bishtonsoftware.flaxe.Flaxe'
+    }
+    archiveName 'flaxe.jar'
+}
