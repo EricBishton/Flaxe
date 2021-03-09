@@ -40,7 +40,7 @@ public class Flaxe {
               .append("   The program will refuse to run if the `<haxe-destination-folder>` exists prior to start.\n")
               .append('\n')
               .append("Typical usage:\n")
-              .append("`java -jar flaxe.jar convert D:\\Sandbox\\MyProject\\Source\\FlashX\\Source\\ D:\\Sandbox\\MyProject\\Source\\Haxe\\Source\\`\n")
+              .append("`java -jar flaxe.jar convert D:\\Development\\MyProject-Actionscript\\Source\\ D:\\Development\\MyProject-Haxe\\Source\\`\n")
               .append("See README.md that accompanied this program for more information.\n");
 
 			System.err.println(usage);

@@ -57,7 +57,7 @@ to start.  There is currently no functionality to merge directories or detect fi
 
 The general command line will be similar to this:
 
-`java -jar flaxe.jar convert D:\Sandbox\MyProject\Source\FlashX\Source\ D:\Sandbox\MyProject\Source\Haxe\Source\`
+`java -jar flaxe.jar convert D:\Development\MyProject-Actionscript\Source\ D:\Development\MyProject-Haxe\Source\`
 
 
 Building:
