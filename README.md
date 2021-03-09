@@ -35,19 +35,19 @@ Java 8 or later installed.
 
 **Running the program:**
 
-Usage: `flaxe.jar <as3-source-folder> <haxe-destination-folder> <action>`
+Usage: `flaxe.jar <action> <as3-source-folder> <haxe-destination-folder>`
 
 Where:
-- `<as3-source-folder>` is the root directory containing actionscript 3 files to convert.
-  All `.as` source files inside of this directory and sub-directories will be processed.
-
-- `<haxe-destination-folder>` is the target directory where the conversion results
-  should be placed.
 - `<action>` is one of `copy`, `convert`:
     - `copy` means to rename source files and copy them to the destination
       folder, but do not do any conversion of the contents.
     - `convert` means to rename source files and copy them to the destination
       folder while replacing recognized patterns with Haxe replacements.
+- `<as3-source-folder>` is the root directory containing actionscript 3 files to convert.
+  All `.as` source files inside of this directory and sub-directories will be processed.
+
+- `<haxe-destination-folder>` is the target directory where the conversion results
+  should be placed.
 
 The program will refuse to run if the `<haxe-destination-folder>` exists prior
 to start.  There is currently no functionality to merge directories or detect file collisions.
@@ -57,7 +57,7 @@ to start.  There is currently no functionality to merge directories or detect fi
 
 The general command line will be similar to this:
 
-`java -jar flaxe.jar D:\Sandbox\MyProject\Source\FlashX\Source\ D:\Sandbox\MyProject\Source\Haxe\Source\ convert`
+`java -jar flaxe.jar convert D:\Sandbox\MyProject\Source\FlashX\Source\ D:\Sandbox\MyProject\Source\Haxe\Source\`
 
 
 Building:

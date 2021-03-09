@@ -28,20 +28,19 @@ public class Flaxe {
 
         if (args.length < 3) {
             StringBuilder usage = new StringBuilder();
-            usage.append("Usage: flaxe.jar <as3-source-folder> <haxe-destination-folder> <action>\n")
+            usage.append("Usage: flaxe.jar <action> <as3-source-folder> <haxe-destination-folder>\n")
               .append("Where:\n")
-              .append("- `<as3-source-folder>` is the root directory containing `.as` source files to convert.\n")
-              .append("- `<haxe-destination-folder>` is the target directory where the conversion results will be placed.\n")
               .append("- `<action>` is one of `copy`, `convert`:\n")
               .append("  + `copy` means to rename source files and copy them to the destination\n")
               .append("    folder, but do not do any conversion of the contents.\n")
               .append("  + `convert` means to rename source files and copy them to the destination\n")
               .append("    folder while replacing recognized patterns with Haxe replacements.\n")
-              .append('\n')
-              .append("The program will refuse to run if the `<haxe-destination-folder>` exists prior to start.\n")
+              .append("- `<as3-source-folder>` is the root directory containing `.as` source files to convert.\n")
+              .append("- `<haxe-destination-folder>` is the target directory where the conversion results will be placed.\n")
+              .append("   The program will refuse to run if the `<haxe-destination-folder>` exists prior to start.\n")
               .append('\n')
               .append("Typical usage:\n")
-              .append("`java -jar flaxe.jar D:\\Sandbox\\MyProject\\Source\\FlashX\\Source\\ D:\\Sandbox\\MyProject\\Source\\Haxe\\Source\\ convert`\n")
+              .append("`java -jar flaxe.jar convert D:\\Sandbox\\MyProject\\Source\\FlashX\\Source\\ D:\\Sandbox\\MyProject\\Source\\Haxe\\Source\\`\n")
               .append("See README.md that accompanied this program for more information.\n");
 
 			System.err.println(usage);
@@ -58,11 +57,10 @@ public class Flaxe {
 		// The idea is that then it's easier to modify the actual module being converted
 		// by replacing "PlaceNavigation" without having to keep updating 2 paths which are unlikely to change.
 
-        File sourceFolder = new File(args[0]);
-        File destinationFolder = new File(args[1]);
-
-		String act = args[2] ;
-		Action action = null ;
+        String act = args[0] ;
+        Action action = null ;
+        File sourceFolder = new File(args[1]);
+        File destinationFolder = new File(args[2]);
 
 		if (act.equalsIgnoreCase("copy"))
 			action = Action.kCopy ;
