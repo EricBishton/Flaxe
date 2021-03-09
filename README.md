@@ -35,22 +35,21 @@ Java 8 or later installed.
 
 **Running the program:**
 
-Usage: `flaxe.jar <base-src-folder> <base-dest-folder> <folder> <action>`
+Usage: `flaxe.jar <as3-source-folder> <haxe-destination-folder> <action>`
 
 Where: 
-- `<base-src-folder>` is the root directory of the project (or sub-project)
-to convert.
-- `<base-dest-folder>` is the root directory where the conversion results
+- `<as3-source-folder>` is the root directory containing actionscript 3 files to convert. 
+All `.as` source files inside of this directory and sub-directories will be processed.
+
+- `<haxe-destination-folder>` is the target directory where the conversion results
 should be placed.
-- `<folder>` is the directory to convert.  All `.as` source files inside of this
-directory will be processed.
 - `<action>` is one of `copy`, `convert`:
   - `copy` means to rename source files and copy them to the destination
 folder, but do not do any conversion of the contents.
   - `convert` means to rename source files and copy them to the destination
 folder while replacing recognized patterns with Haxe replacements.
 
-The program will refuse to run if the `<base-dest-folder>` exists prior
+The program will refuse to run if the `<haxe-destination-folder>` exists prior
 to start.  There is currently no functionality to merge directories or detect file collisions.
 
 
@@ -58,18 +57,7 @@ to start.  There is currently no functionality to merge directories or detect fi
 
 The general command line will be similar to this:
 
-`java -jar flaxe.jar D:\Sandbox\MyProject\Source\FlashX\ D:\Sandbox\MyProject\Source\Haxe\ Source copy`
-
-from which we build the full src-folder:
-  `D:\Sandbox\MyProject\Source\FlashX\Source`
-
-and full dest-folder:
-  `D:\Sandbox\MyProject\Haxe\Source`
-
-The idea is that it's easier to modify the actual module being 
-converted by replacing "Source" without having to keep updating two 
-paths which are unlikely to change.  This should make it easier to
-create a wrapper script for your specific project.
+`java -jar flaxe.jar D:\Sandbox\MyProject\Source\FlashX\Source\ D:\Sandbox\MyProject\Source\Haxe\Source\ convert`
 
 
 Building:
