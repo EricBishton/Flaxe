@@ -32,7 +32,7 @@ public class Patterns {
 		m_patterns.add(new Pattern(":void", ":Void")) ;
 		m_patterns.add(new Pattern(":Number", ":Float")) ;
 		m_patterns.add(new Pattern(":Boolean", ":Bool")) ;
-		//m_patterns.add(new Pattern(":uint", ":UInt")) ; // Not supported on all platforms so no automatic conversion
+		m_patterns.add(new Pattern(":uint", ":UInt")) ; // Not native on all platforms see: https://api.haxe.org/UInt.html
 		m_patterns.add(new Pattern("Vector.<int>", "Vector<Int>")) ;
 		m_patterns.add(new Pattern("Vector.<Boolean>", "Vector<Bool>")) ;
 		m_patterns.add(new Pattern("Vector.<Number>", "Vector<Float>")) ;
