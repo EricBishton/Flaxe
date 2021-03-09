@@ -21,10 +21,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Flaxe {
-	public enum Action { kCopy, kConvert} ;
+    public enum Action { kCopy, kConvert}
 
-	public static void main(String[] args) throws IOException {
-		System.out.println("flaxe v1.0");
+    public static void main(String[] args) throws IOException {
+        System.out.println("flaxe v1.0");
 
         if (args.length < 3) {
             StringBuilder usage = new StringBuilder();
@@ -43,91 +43,90 @@ public class Flaxe {
               .append("`java -jar flaxe.jar convert D:\\Development\\MyProject-Actionscript\\Source\\ D:\\Development\\MyProject-Haxe\\Source\\`\n")
               .append("See README.md that accompanied this program for more information.\n");
 
-			System.err.println(usage);
-			System.exit(1);
-		}
+            System.err.println(usage);
+            System.exit(1);
+        }
 
-		// Pattern is
-		// java -jar flash-preprocessor.jar D:\fp\Main\Source\FlashX\SharedX D:\fp\Main\Source\Haxe\Research PlaceNavigation
-		// from which we build the full src is:
-		// D:\fp\Main\Source\FlashX\SharedX\PlaceNavigation
-		// and full dest is:
-		// D:\fp\Main\Source\Haxe\Research\PlaceNavigation
+        // Pattern is
+        // java -jar flash-preprocessor.jar D:\fp\Main\Source\FlashX\SharedX D:\fp\Main\Source\Haxe\Research PlaceNavigation
+        // from which we build the full src is:
+        // D:\fp\Main\Source\FlashX\SharedX\PlaceNavigation
+        // and full dest is:
+        // D:\fp\Main\Source\Haxe\Research\PlaceNavigation
 
-		// The idea is that then it's easier to modify the actual module being converted
-		// by replacing "PlaceNavigation" without having to keep updating 2 paths which are unlikely to change.
+        // The idea is that then it's easier to modify the actual module being converted
+        // by replacing "PlaceNavigation" without having to keep updating 2 paths which are unlikely to change.
 
         String act = args[0] ;
         Action action = null ;
         File sourceFolder = new File(args[1]);
         File destinationFolder = new File(args[2]);
 
-		if (act.equalsIgnoreCase("copy"))
-			action = Action.kCopy ;
-		if (act.equalsIgnoreCase("convert"))
-			action = Action.kConvert;
+        if (act.equalsIgnoreCase("copy"))
+            action = Action.kCopy ;
+        if (act.equalsIgnoreCase("convert"))
+            action = Action.kConvert;
 
-		if (action == null) {
-			System.err.println("Last parameter must be one of: 'copy', 'convert'; not " + act) ;
-			System.exit(1) ;
-		}
+        if (action == null) {
+            System.err.println("Last parameter must be one of: 'copy', 'convert'; not " + act) ;
+            System.exit(1) ;
+        }
 
-		if (destinationFolder.exists()) {
-			System.err.println("Refusing to overwrite destination folder '" + destinationFolder + "'.\n" +
-					           "Please remove it or provide another base destination folder.") ;
-			System.exit(2) ;
-		}
+        if (destinationFolder.exists()) {
+            System.err.println("Refusing to overwrite destination folder '" + destinationFolder + "'.\n" +
+              "Please remove it or provide another base destination folder.") ;
+            System.exit(2) ;
+        }
 
-		Flaxe app = new Flaxe() ;
-		app.preProcess(sourceFolder, destinationFolder, action) ;
-		System.out.println("Finished.");
-	}
+        Flaxe app = new Flaxe() ;
+        app.preProcess(sourceFolder, destinationFolder, action) ;
+        System.out.println("Finished.");
+    }
 
-	private String changeExtension(String original) {
-		return original.replace(".as", ".hx") ;
-	}
+    private String changeExtension(String original) {
+        return original.replace(".as", ".hx") ;
+    }
 
-	private void preProcess(File srcFolder, File destFolder, Action action) throws IOException {
-		FileFilter filter = FileHelper.createFileFilter(".as") ;
-		List<File> srcFiles = FileHelper.generateFileList(filter, srcFolder, true) ;
+    private void preProcess(File srcFolder, File destFolder, Action action) throws IOException {
+        FileFilter filter = FileHelper.createFileFilter(".as") ;
+        List<File> srcFiles = FileHelper.generateFileList(filter, srcFolder, true) ;
 
-		System.out.println("Deleting " + destFolder.getCanonicalPath()) ;
-		destFolder.mkdirs() ;
-		FileHelper.recursiveDelete(destFolder, filter, 0, Long.MAX_VALUE) ;
+        System.out.println("Deleting " + destFolder.getCanonicalPath()) ;
+        destFolder.mkdirs() ;
+        FileHelper.recursiveDelete(destFolder, filter, 0, Long.MAX_VALUE) ;
 
-		for (File src : srcFiles) {
-			String relativePath = FileHelper.getRelativePath(srcFolder, src) ;
-			String modifiedExt = changeExtension(relativePath) ;
-			File dest = new File(destFolder, modifiedExt) ;
+        for (File src : srcFiles) {
+            String relativePath = FileHelper.getRelativePath(srcFolder, src) ;
+            String modifiedExt = changeExtension(relativePath) ;
+            File dest = new File(destFolder, modifiedExt) ;
 
-			System.out.println(action + " "  + src + " to " + dest) ;
-			convert(src, dest, action) ;
-		}
-	}
+            System.out.println(action + " "  + src + " to " + dest) ;
+            convert(src, dest, action) ;
+        }
+    }
 
-	public void convert(File inputFile, File outputFile, Action action) throws IOException {
-		List<String> lines = new ArrayList<>() ;
-		String line ;
+    public void convert(File inputFile, File outputFile, Action action) throws IOException {
+        List<String> lines = new ArrayList<>() ;
+        String line ;
 
-		// We read in the entire input file
-		// so that we can examine any part, not just limited to line by line analysis
-		// Using try-with-resource to catch and close
-		try (BufferedReader input = new BufferedReader(new FileReader(inputFile))) {
-			while ((line = input.readLine()) != null) {
-				lines.add(line);
-			}
-		}
+        // We read in the entire input file
+        // so that we can examine any part, not just limited to line by line analysis
+        // Using try-with-resource to catch and close
+        try (BufferedReader input = new BufferedReader(new FileReader(inputFile))) {
+            while ((line = input.readLine()) != null) {
+                lines.add(line);
+            }
+        }
 
-		ConvertFile converter = new ConvertFile(inputFile) ;
-		List<String> modifiedLines = converter.convertFileContents(lines, action) ;
+        ConvertFile converter = new ConvertFile(inputFile) ;
+        List<String> modifiedLines = converter.convertFileContents(lines, action) ;
 
-		// Write out the new file
-		outputFile.getParentFile().mkdirs() ;
-		try (PrintWriter output = new PrintWriter(new FileWriter(outputFile))) {
-			for (String outLine : modifiedLines) {
-				output.println(outLine) ;
-			}
-		};
-	}
-
+        // Write out the new file
+        outputFile.getParentFile().mkdirs() ;
+        try (PrintWriter output = new PrintWriter(new FileWriter(outputFile))) {
+            for (String outLine : modifiedLines) {
+                output.println(outLine) ;
+            }
+        }
+    }
 }
