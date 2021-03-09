@@ -19,79 +19,50 @@ package com.bishtonsoftware.flaxe;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class Flaxe {
-	public enum Action { kCopy, kConvert} ;
+	public enum Action {COPY, CONVERT} ;
 
 	public static void main(String[] args) throws IOException {
-		System.out.println("flaxe v1.0");
+		System.out.println("Flaxe v2.0 - AS3 to Haxe convertor");
 
-		if (args.length < 4) {
+		if (args.length < 3) {
 			StringBuilder usage = new StringBuilder();
-			usage.append("Usage: flaxe.jar <base-src-folder> <base-dest-folder> <folder> <action>\n")
+			usage.append("Usage: flaxe.jar <as3-source-folder> <haxe-destination-folder> <action>\n")
 					.append("Where:\n")
-					.append("- `<base-src-folder>` is the root directory of the project (or sub-project)\n")
-					.append("   to convert.\n")
-					.append("- `<base-dest-folder>` is the root directory where the conversion results\n")
-					.append("   should be placed.\n")
-					.append("- `<folder>` is the directory to convert.  All `.as` source files inside of\n")
-					.append("   this directory will be processed.\n")
+					.append("- `<as3-source-folder>` is the root directory containing `.as` source files to convert.\n")
+					.append("- `<haxe-destination-folder>` is the target directory where the conversion results will be placed.\n")
 					.append("- `<action>` is one of `copy`, `convert`:\n")
 					.append("  + `copy` means to rename source files and copy them to the destination\n")
 					.append("    folder, but do not do any conversion of the contents.\n")
 					.append("  + `convert` means to rename source files and copy them to the destination\n")
 					.append("    folder while replacing recognized patterns with Haxe replacements.\n")
 					.append('\n')
-					.append("The program will refuse to run if the `<base-dest-folder>` exists prior\n")
-					.append("to start.  There is currently no functionality to merge directories or \n")
-					.append("detect file collisions.\n")
+					.append("The program will refuse to run if the `<haxe-destination-folder>` exists prior to start.\n")
 					.append('\n')
 					.append("Typical usage:\n")
-					.append("   `java -jar flaxe.jar D:\\MyProject\\FlashX\\ D:\\MyProject\\Haxe\\ Source copy`\n")
+					.append("`java -jar flaxe.jar D:\\Sandbox\\MyProject\\Source\\FlashX\\Source\\ D:\\Sandbox\\MyProject\\Source\\Haxe\\Source\\ convert`\n")
 					.append("See README.md that accompanied this program for more information.\n");
 
 			System.err.println(usage);
 			System.exit(1);
 		}
 
-		// Pattern is
-		// java -jar flash-preprocessor.jar D:\fp\Main\Source\FlashX\SharedX D:\fp\Main\Source\Haxe\Research PlaceNavigation
-		// from which we build the full src is:
-		// D:\fp\Main\Source\FlashX\SharedX\PlaceNavigation
-		// and full dest is:
-		// D:\fp\Main\Source\Haxe\Research\PlaceNavigation
-
-		// The idea is that then it's easier to modify the actual module being converted
-		// by replacing "PlaceNavigation" without having to keep updating 2 paths which are unlikely to change.
-
-		File baseSrcFolder = new File(args[0]) ;
-		File baseDestFolder = new File(args[1]) ;
-		String folder = args[2] ;
-
-		String act = args[3] ;
-		Action action = null ;
-
-		if (act.equalsIgnoreCase("copy"))
-			action = Action.kCopy ;
-		if (act.equalsIgnoreCase("convert"))
-			action = Action.kConvert;
-
-		if (action == null) {
-			System.err.println("Last parameter must be one of: 'copy', 'convert'; not " + act) ;
-			System.exit(1) ;
-		}
-
-		File srcFolder = new File(baseSrcFolder, folder) ;
-		File destFolder = new File(baseDestFolder, folder) ;
-
-		if (destFolder.exists()) {
-			System.err.println("Refusing to overwrite destination folder '" + destFolder + "'.\n" +
-					           "Please remove it or provide another base destination folder.") ;
-			System.exit(2) ;
-		}
+		File sourceFolder = new File(args[0]) ;
+		File destinationFolder = new File(args[1]) ;
+		String actionInput = args[2] ;
+		Action action;
+		try {
+            action = Action.valueOf(actionInput.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            System.err.println("Last argument must be one of: 'copy', 'convert'; not " + actionInput) ;
+            System.exit(1);
+            return;
+        }
 
 		Flaxe app = new Flaxe() ;
-		app.preProcess(srcFolder, destFolder, action) ;
+		app.preProcess(sourceFolder, destinationFolder, action);
 		System.out.println("Finished.");
 	}
 
@@ -103,9 +74,21 @@ public class Flaxe {
 		FileFilter filter = FileHelper.createFileFilter(".as") ;
 		List<File> srcFiles = FileHelper.generateFileList(filter, srcFolder, true) ;
 
-		System.out.println("Deleting " + destFolder.getCanonicalPath()) ;
-		destFolder.mkdirs() ;
-		FileHelper.recursiveDelete(destFolder, filter, 0, Long.MAX_VALUE) ;
+        if (destFolder.exists()) {
+            System.err.println("Refusing to overwrite destination folder '" + destFolder + "'.\n" +
+              "Please remove it or provide another destination folder.") ;
+            System.exit(2) ;
+            return;
+        }
+
+		System.out.println("Creating " + destFolder.getCanonicalPath()) ;
+		boolean isDestinationFolderCreated = destFolder.mkdirs();
+
+		if (!isDestinationFolderCreated) {
+		    System.err.println("Failed to create destination folder. Aborting...");
+            System.exit(3);
+            return;
+        }
 
 		for (File src : srcFiles) {
 			String relativePath = FileHelper.getRelativePath(srcFolder, src) ;
