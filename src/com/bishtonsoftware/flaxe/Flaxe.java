@@ -26,29 +26,23 @@ public class Flaxe {
 	public static void main(String[] args) throws IOException {
 		System.out.println("flaxe v1.0");
 
-		if (args.length < 4) {
-			StringBuilder usage = new StringBuilder();
-			usage.append("Usage: flaxe.jar <base-src-folder> <base-dest-folder> <folder> <action>\n")
-					.append("Where:\n")
-					.append("- `<base-src-folder>` is the root directory of the project (or sub-project)\n")
-					.append("   to convert.\n")
-					.append("- `<base-dest-folder>` is the root directory where the conversion results\n")
-					.append("   should be placed.\n")
-					.append("- `<folder>` is the directory to convert.  All `.as` source files inside of\n")
-					.append("   this directory will be processed.\n")
-					.append("- `<action>` is one of `copy`, `convert`:\n")
-					.append("  + `copy` means to rename source files and copy them to the destination\n")
-					.append("    folder, but do not do any conversion of the contents.\n")
-					.append("  + `convert` means to rename source files and copy them to the destination\n")
-					.append("    folder while replacing recognized patterns with Haxe replacements.\n")
-					.append('\n')
-					.append("The program will refuse to run if the `<base-dest-folder>` exists prior\n")
-					.append("to start.  There is currently no functionality to merge directories or \n")
-					.append("detect file collisions.\n")
-					.append('\n')
-					.append("Typical usage:\n")
-					.append("   `java -jar flaxe.jar D:\\MyProject\\FlashX\\ D:\\MyProject\\Haxe\\ Source copy`\n")
-					.append("See README.md that accompanied this program for more information.\n");
+        if (args.length < 3) {
+            StringBuilder usage = new StringBuilder();
+            usage.append("Usage: flaxe.jar <as3-source-folder> <haxe-destination-folder> <action>\n")
+              .append("Where:\n")
+              .append("- `<as3-source-folder>` is the root directory containing `.as` source files to convert.\n")
+              .append("- `<haxe-destination-folder>` is the target directory where the conversion results will be placed.\n")
+              .append("- `<action>` is one of `copy`, `convert`:\n")
+              .append("  + `copy` means to rename source files and copy them to the destination\n")
+              .append("    folder, but do not do any conversion of the contents.\n")
+              .append("  + `convert` means to rename source files and copy them to the destination\n")
+              .append("    folder while replacing recognized patterns with Haxe replacements.\n")
+              .append('\n')
+              .append("The program will refuse to run if the `<haxe-destination-folder>` exists prior to start.\n")
+              .append('\n')
+              .append("Typical usage:\n")
+              .append("`java -jar flaxe.jar D:\\Sandbox\\MyProject\\Source\\FlashX\\Source\\ D:\\Sandbox\\MyProject\\Source\\Haxe\\Source\\ convert`\n")
+              .append("See README.md that accompanied this program for more information.\n");
 
 			System.err.println(usage);
 			System.exit(1);
@@ -64,11 +58,10 @@ public class Flaxe {
 		// The idea is that then it's easier to modify the actual module being converted
 		// by replacing "PlaceNavigation" without having to keep updating 2 paths which are unlikely to change.
 
-		File baseSrcFolder = new File(args[0]) ;
-		File baseDestFolder = new File(args[1]) ;
-		String folder = args[2] ;
+        File sourceFolder = new File(args[0]);
+        File destinationFolder = new File(args[1]);
 
-		String act = args[3] ;
+		String act = args[2] ;
 		Action action = null ;
 
 		if (act.equalsIgnoreCase("copy"))
@@ -81,17 +74,14 @@ public class Flaxe {
 			System.exit(1) ;
 		}
 
-		File srcFolder = new File(baseSrcFolder, folder) ;
-		File destFolder = new File(baseDestFolder, folder) ;
-
-		if (destFolder.exists()) {
-			System.err.println("Refusing to overwrite destination folder '" + destFolder + "'.\n" +
+		if (destinationFolder.exists()) {
+			System.err.println("Refusing to overwrite destination folder '" + destinationFolder + "'.\n" +
 					           "Please remove it or provide another base destination folder.") ;
 			System.exit(2) ;
 		}
 
 		Flaxe app = new Flaxe() ;
-		app.preProcess(srcFolder, destFolder, action) ;
+		app.preProcess(sourceFolder, destinationFolder, action) ;
 		System.out.println("Finished.");
 	}
 
