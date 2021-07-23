@@ -38,10 +38,9 @@ Usage: `flaxe.jar <action> <as3-source-folder> <haxe-destination-folder>`
 
 Where:
 - `<action>` is one of `rename`, `convert`:
-    - `rename` means to rename source files and copy them to the destination
-      folder, but do not do any conversion of the contents.
-    - `convert` means to rename source files and copy them to the destination
-      folder while replacing recognized patterns with Haxe replacements.
+    - `rename` means to only rename `.as` file extensions to `.hx`
+    - `convert` means to rename file extensions, and convert file contents by replacing recognized 
+      patterns with Haxe replacements.
 - `<as3-source-folder>` is the root directory containing actionscript 3 files to convert.  
   All `.as` source files inside of this directory and sub-directories will be processed.
 - `<haxe-destination-folder>` is the target directory where the conversion results
