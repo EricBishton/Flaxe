@@ -1,5 +1,7 @@
 Unused/*
 .idea/*
+*.iml
 .gradle/*
 build/*
 gradle/*
+out/*
