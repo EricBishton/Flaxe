@@ -37,8 +37,8 @@ This tool is implemented in Java. Therefore, you must have Java 8 or later insta
 Usage: `flaxe.jar <action> <as3-source-folder> <haxe-destination-folder>`
 
 Where:
-- `<action>` is one of `copy`, `convert`:
-    - `copy` means to rename source files and copy them to the destination
+- `<action>` is one of `rename`, `convert`:
+    - `rename` means to rename source files and copy them to the destination
       folder, but do not do any conversion of the contents.
     - `convert` means to rename source files and copy them to the destination
       folder while replacing recognized patterns with Haxe replacements.

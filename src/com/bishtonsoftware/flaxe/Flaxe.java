@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Flaxe {
-    public enum Action { kCopy, kConvert}
+    public enum Action {kRename, kConvert}
 
     public static void main(String[] args) throws IOException {
         System.out.println("flaxe v1.0");
@@ -40,7 +40,7 @@ public class Flaxe {
               .append("   The program will refuse to run if the `<haxe-destination-folder>` exists prior to start.\n")
               .append('\n')
               .append("Typical usage:\n")
-              .append("`java -jar flaxe.jar convert D:\\Development\\MyProject-Actionscript\\Source\\ D:\\Development\\MyProject-Haxe\\Source\\`\n")
+              .append("`java -jar flaxe.jar convert D:\\Development\\FlashProject\\Sources\\ D:\\Development\\HaxeProject\\Sources\\`\n")
               .append("See README.md that accompanied this program for more information.\n");
 
             System.err.println(usage);
@@ -62,13 +62,13 @@ public class Flaxe {
         File sourceFolder = new File(args[1]);
         File destinationFolder = new File(args[2]);
 
-        if (act.equalsIgnoreCase("copy"))
-            action = Action.kCopy ;
+        if (act.equalsIgnoreCase("rename"))
+            action = Action.kRename;
         if (act.equalsIgnoreCase("convert"))
             action = Action.kConvert;
 
         if (action == null) {
-            System.err.println("Last parameter must be one of: 'copy', 'convert'; not " + act) ;
+            System.err.println("First argument must be one of: 'rename', 'convert'; not " + act) ;
             System.exit(1) ;
         }
 

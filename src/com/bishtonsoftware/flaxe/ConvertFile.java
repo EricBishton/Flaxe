@@ -160,7 +160,7 @@ public class ConvertFile {
 
 	public List<String> convertFileContents(List<String> lines, Flaxe.Action action) throws IOException {
 		// If we're just copying the file, don't modify anything
-		if (action == Flaxe.Action.kCopy)
+		if (action == Flaxe.Action.kRename)
 			return lines ;
 
 		lines = fixConstructor(lines, action) ;
