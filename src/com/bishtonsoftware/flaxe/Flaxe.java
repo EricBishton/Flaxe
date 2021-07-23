@@ -26,7 +26,11 @@ public class Flaxe {
     public static void main(String[] args) throws IOException {
         System.out.println("flaxe v1.0");
 
-        if (args.length < 3) {
+        int argumentCount = args.length;
+        if (argumentCount != 3) {
+            System.err.println("Error, expected 3 arguments, got " + argumentCount + ".");
+            System.err.println();
+
             StringBuilder usage = new StringBuilder();
             usage.append("Usage: flaxe.jar <action> <as3-source-folder> <haxe-destination-folder>\n")
               .append("Where:\n")
@@ -41,7 +45,7 @@ public class Flaxe {
               .append("`java -jar flaxe.jar convert D:\\Development\\FlashProject\\Sources\\ D:\\Development\\HaxeProject\\Sources\\`\n")
               .append("See README.md that accompanied this program for more information.\n");
 
-            System.err.println(usage);
+            System.out.println(usage);
             System.exit(1);
         }
 
