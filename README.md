@@ -3,7 +3,7 @@ Flaxe
 
 An AS3 to Haxe conversion script.
 
-AS3Haxe is an excellent tool that does more than this
+[AS3Haxe](https://github.com/HaxeFoundation/as3hx) is an excellent tool that does more than this
 program does.  However, it also can introduce subtle bugs
 in the code that cannot be detected until run-time.  When
 this program was designed, the intent was to do most of
@@ -30,8 +30,7 @@ Usage
 
 **Pre-requisites:**
 
-This tool is implemented in Java.  Therefore, you must have
-Java 8 or later installed.
+This tool is implemented in Java. Therefore, you must have Java 8 or later installed.
 
 **Running the program:**
 
@@ -43,9 +42,8 @@ Where:
       folder, but do not do any conversion of the contents.
     - `convert` means to rename source files and copy them to the destination
       folder while replacing recognized patterns with Haxe replacements.
-- `<as3-source-folder>` is the root directory containing actionscript 3 files to convert.
+- `<as3-source-folder>` is the root directory containing actionscript 3 files to convert.  
   All `.as` source files inside of this directory and sub-directories will be processed.
-
 - `<haxe-destination-folder>` is the target directory where the conversion results
   should be placed.
 
@@ -57,7 +55,7 @@ to start.  There is currently no functionality to merge directories or detect fi
 
 The general command line will be similar to this:
 
-`java -jar flaxe.jar convert D:\Development\MyProject-Actionscript\Source\ D:\Development\MyProject-Haxe\Source\`
+`java -jar flaxe.jar convert D:\Development\FlashProject\Sources\ D:\Development\HaxeProject\Sources\`
 
 
 Building:
